@@ -1,0 +1,36 @@
+.sidebar-menu-tight .ant-menu-item,
+.sidebar-menu-tight .ant-menu-submenu-title {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  font-weight: 400 !important;
+}
+
+.sidebar-menu-tight .ant-menu-item *,
+.sidebar-menu-tight .ant-menu-submenu-title * {
+  font-weight: 400 !important;
+}
+
+.sidebar-menu-tight .ant-menu-item .ant-menu-title-content,
+.sidebar-menu-tight .ant-menu-submenu-title .ant-menu-title-content {
+  font-weight: 400 !important;
+  color: #888 !important;
+}
+
+.sidebar-menu-tight .ant-menu-item-selected .ant-menu-title-content {
+  font-weight: 400 !important;
+  color: #ffa940 !important;
+}
+
+.sidebar-menu-tight .ant-menu-item .ant-menu-item-icon,
+.sidebar-menu-tight .ant-menu-submenu-title .ant-menu-item-icon {
+  margin-right: 8px !important;
+}
+
+.sidebar-menu-icon-center .ant-menu-item .ant-menu-item-icon,
+.sidebar-menu-icon-center .ant-menu-submenu-title .ant-menu-item-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 32px;
+  width: 32px;
+}
