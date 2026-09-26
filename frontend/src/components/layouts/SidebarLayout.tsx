@@ -1,20 +1,46 @@
 import React, { useState } from "react";
 import { Menu, ConfigProvider } from "antd";
 import type { MenuProps } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import { EyeTwoTone, MenuOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import { routeToKeyMap, menuConfig } from "../../config/menuConfig";
 import companylogo from "../../assets/login_transparen.png";
 import { useTheme } from "../../context/ThemeContext";
+import { useTenant } from "../../context/TenantContext";
+import { assetManagementMenu } from "../../config/modules/assetManagementMenu";
+import { inventoryManagementMenu } from "../../config/modules/inventoryManagementMenu";
+// import type { ModuleMenu } from "../../config/modules/types";
 import "./css/SidebarLayout.css";
 interface SidebarLayoutProps {
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
 }
 
+interface ModuleMenu {
+  moduleKey: string;
+  groupTitle: string;
+  items: any[];
+}
 const SidebarLayout = ({ collapsed, setCollapsed }: SidebarLayoutProps) => {
   const location = useLocation();
   const { theme } = useTheme();
+  const { entitlements } = useTenant();
+  const allModuleMenus: ModuleMenu[] = [
+    assetManagementMenu,
+    inventoryManagementMenu,
+  ];
+
+  // const isAssetManagementEnabled = entitlements.some(
+  //   (entitlement) =>
+  //     entitlement.module.key === assetManagementMenu.moduleKey &&
+  //     entitlement.enabled,
+  // );
+
+  // const isAssetInventoryManagementEnabled = entitlements.some(
+  //   (entitlement) =>
+  //     entitlement.module.key === inventoryManagementMenu.moduleKey &&
+  //     entitlement.enabled,
+  // );
 
   // State for open keys and selected keys
   const [openKeys, setOpenKeys] = useState(["dashboard"]);
@@ -70,17 +96,97 @@ const SidebarLayout = ({ collapsed, setCollapsed }: SidebarLayoutProps) => {
       };
     });
 
+  // const assetManagementSection = [
+  //   { type: "divider" },
+  //   {
+  //     type: "group",
+  //     key: "asset-group",
+  //     title: assetManagementMenu.groupTitle,
+  //   },
+  //   ...assetManagementMenu.items,
+  // ];
+
+  // const InventoryManagementSection = [
+  //   { type: "divider" },
+  //   {
+  //     type: "group",
+  //     key: "inventory-group",
+  //     title: inventoryManagementMenu.groupTitle,
+  //   },
+  //   ...inventoryManagementMenu.items,
+  // ];
+
+  const isModuleEnabled = (moduleMenu: ModuleMenu) =>
+    entitlements.some(
+      (entitlement) =>
+        entitlement.module.key === moduleMenu.moduleKey && entitlement.enabled,
+    );
+
+  // const enabledModuleMenus: ModuleMenu[] = allModuleMenus.filter((moduleMenu) =>
+  //   isModuleEnabled(moduleMenu),
+  // );
+
+  const buildModuleSection = (moduleMenu: ModuleMenu) => [
+    { type: "divider" },
+    {
+      type: "group",
+      key: `${moduleMenu.moduleKey}-group`,
+      title: moduleMenu.groupTitle,
+    },
+    ...moduleMenu.items,
+  ];
+
+  // const enabledModuleSections = enabledModuleMenus.map((moduleMenu) =>
+  //   buildModuleSection(moduleMenu),
+  // );
+
   // Optionally filter out groups if collapsed
-  const filteredConfig = menuConfig.filter(
+  // const filteredConfig = menuConfig.filter(
+  //   (item) =>
+  //     !(
+  //       typeof item === "object" &&
+  //       "type" in item &&
+  //       item.type === "group" &&
+  //       collapsed
+  //     ),
+  // );
+
+  // const combinedRaw = [
+  //   ...menuConfig,
+  //   ...(isAssetManagementEnabled ? assetManagementSection : []),
+  //   ...(isAssetInventoryManagementEnabled ? InventoryManagementSection : []),
+  // ];
+
+  const enabledModuleMenus = allModuleMenus.filter((moduleMenu) =>
+    isModuleEnabled(moduleMenu),
+  );
+  const enabledModuleSections = enabledModuleMenus.map((moduleMenu) =>
+    buildModuleSection(moduleMenu),
+  );
+  const allEnabledSections = enabledModuleSections.flat();
+  const combinedRaw = [...menuConfig, ...allEnabledSections];
+
+  const combined = combinedRaw.filter(
     (item) =>
       !(
         typeof item === "object" &&
         "type" in item &&
         item.type === "group" &&
         collapsed
-      )
+      ),
   );
-  const menuItems = buildMenuItems(filteredConfig);
+
+  // const combined = [
+  //   ...filteredConfig,
+  //   ...(isAssetManagementEnabled ? assetManagementSection : []),
+  // ];
+
+  // const combined = [
+  //   ...filteredConfig,
+  //   ...(isAssetManagementEnabled ? assetManagementSection : []),
+  // ];
+
+  const menuItems = buildMenuItems(combined);
 
   return (
     <ConfigProvider theme={theme}>
@@ -122,7 +228,7 @@ const SidebarLayout = ({ collapsed, setCollapsed }: SidebarLayoutProps) => {
             if (
               latestOpenKey &&
               ["dashboard", "superadmin", "asset-settings"].includes(
-                latestOpenKey
+                latestOpenKey,
               )
             ) {
               setOpenKeys([latestOpenKey]);

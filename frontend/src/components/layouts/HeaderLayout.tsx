@@ -8,23 +8,13 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const HeaderLayout = () => {
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState({ username: "User", id: null });
 
   // Get user info from localStorage on component mount
-  useEffect(() => {
-    const storedUserInfo = localStorage.getItem("user");
-    if (storedUserInfo) {
-      try {
-        const user = JSON.parse(storedUserInfo);
-        setUserInfo(user);
-      } catch (error) {
-        console.error("Error parsing user info:", error);
-      }
-    }
-  }, []);
 
   // Handle profile menu clicks
   const handleProfileClick: MenuProps["onClick"] = ({ key }) => {
@@ -38,10 +28,8 @@ const HeaderLayout = () => {
         navigate("/settings");
         break;
       case "logout":
-        // Clear authentication data and redirect to login
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        navigate("/login");
+        logout();
+
         break;
       default:
         break;
@@ -145,7 +133,7 @@ const HeaderLayout = () => {
         >
           <Space style={{ cursor: "pointer" }}>
             <Avatar icon={<UserOutlined />} />
-            <span>{userInfo.username}</span>
+            <span>{user?.username ?? "User"}</span>
           </Space>
         </Dropdown>
       </Space>

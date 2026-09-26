@@ -1,16 +1,21 @@
 import React from "react";
 import { Card, Row, Col, Typography, Space } from "antd";
+import { useTenant } from "../context/TenantContext";
 
 const { Title, Paragraph } = Typography;
 
 const Dashboard: React.FC = () => {
+  const { tenant, entitlements } = useTenant();
   return (
     <Space orientation="vertical" size="large" style={{ width: "100%" }}>
-      <Title level={2}>Welcome to UnifyOS Dashboard</Title>
+      <Title level={2}>
+        Welcome to {tenant?.tenant_name}'s UnifyOS Dashboard
+      </Title>
       <Paragraph>
         This is your central hub. Here you can see an overview of your systems
         and quick stats.
       </Paragraph>
+
       <Row gutter={[24, 24]}>
         <Col xs={24} sm={12} md={8}>
           <Card title="Active Systems" bordered={false}>
