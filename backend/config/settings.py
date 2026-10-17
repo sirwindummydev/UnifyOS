@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-*8#9xll3(&b_xr9sppi$z0@__xbhkqn$%)fg+dn%oca$a-@1s5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.localhost']  # the leading dot allows all subdomains
+
 
 
 # Application definition
@@ -41,13 +42,30 @@ INSTALLED_APPS = [
     'corsheaders', # Added for CORS
     'rest_framework', # Added for DRF
     'rest_framework.authtoken', # Added for token authentication
+     "drf_spectacular", # for api documentation
+
+    #sirwin apps
+    'apps.assets'
 ]
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "My Project API",
+    "DESCRIPTION": "API documentation for my project",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
 ]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http://[\w.-]+\.localhost:\d+$",
+]
+
 
 
 MIDDLEWARE = [

@@ -13,6 +13,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import "./App.css";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
+import AllAssets from "./pages/assets/AllAssets";
 
 function AppContent() {
   const { loading, error } = useTenant();
@@ -43,6 +44,7 @@ function AppContent() {
               element={<Navigate to="/dashboard/overview" replace />}
             />
             <Route path="dashboard/overview" element={<Dashboard />} />
+            <Route path="assets/all-assets" element={<AllAssets />} />
           </Route>
         )}
       </Routes>

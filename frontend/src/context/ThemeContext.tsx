@@ -7,6 +7,7 @@ const themes = {
   orange: {
     token: {
       colorPrimary: "#ffa940",
+      colorContrast: "#092c4c",
       borderRadius: 6,
     },
     components: {
@@ -26,6 +27,8 @@ const themes = {
   blue: {
     token: {
       colorPrimary: "#1890ff",
+      colorContrast: "#092c4c",
+
       borderRadius: 6,
     },
     components: {
@@ -45,6 +48,8 @@ const themes = {
   green: {
     token: {
       colorPrimary: "#389e0d",
+      colorContrast: "#092c4c",
+
       borderRadius: 6,
     },
     components: {
@@ -64,6 +69,8 @@ const themes = {
   yellowOrange: {
     token: {
       colorPrimary: "#fa8c16",
+      colorContrast: "#092c4c",
+
       borderRadius: 6,
     },
     components: {
